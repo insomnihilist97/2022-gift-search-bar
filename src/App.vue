@@ -2,8 +2,27 @@
 import { ref, watch } from 'vue'
 
 const searchTerm = ref('')
+let startTime = 0;
+let functionCalledInWindow = false;
 
-const findProducts = async term => {}
+const debounce = async (func, delay) => { 
+  if(!functionCalledInWindow) 
+  {
+    startTime = Date.now();
+    functionCalledInWindow = true;
+    await func();
+  }
+  else{
+    if(Date.now() - startTime > delay)  
+    {
+      console.log(Date.now() - startTime)
+      functionCalledInWindow = false;
+      await func();
+    }
+  }
+ }
+
+const findProducts = async term =>  debounce(() => { setTimeout( () => console.log('newTerm ', term), 1000)}, 1000)
 
 watch(searchTerm, newTerm => findProducts(newTerm))
 </script>
