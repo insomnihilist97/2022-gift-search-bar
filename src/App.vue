@@ -18,12 +18,13 @@ const debounce = async (func, delay) => {
   else if(Date.now() - startTime < delay) {
     clearTimeout(funcId);
     clearTimeout(resetId);
+    startTime = Date.now();
     funcId = setTimeout(func, delay);
     resetId = setTimeout(() => funcCalled = false, delay);
   }
 }
 
-const findProducts = async term =>  debounce(() => console.log('newTerm ', term), 2000)
+const findProducts = async term => debounce(() => console.log('newTerm ', term), 2000)
 
 watch(searchTerm, newTerm => findProducts(newTerm))
 </script>
